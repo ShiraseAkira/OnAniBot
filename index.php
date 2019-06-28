@@ -8,7 +8,23 @@ $result = $telegram -> getWebhookUpdates(); //Передаем в перемен
 $text = $result["message"]["text"]; //Текст сообщения
 $chat_id = $result["message"]["chat"]["id"]; //Уникальный идентификатор пользователя
 $name = $result["message"]["from"]["username"]; //Юзернейм пользователя
-$keyboard = [["Hello World!"], ["Hello, username"]]; //Клавиатура
+$keyboard = [["Hello World!"], ["Hello, username"], ["Next anime"]]; //Клавиатура
+
+function getNextAnime(){
+    // create curl resource
+    $ch = curl_init();
+    // set url
+    curl_setopt($ch, CURLOPT_URL, "https://shikimori.one/api/calendar");
+    //return the transfer as a string
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    // $output contains the output string
+    $output = curl_exec($ch);
+    // close curl resource to free up system resources
+    curl_close($ch);
+
+    $data = json_decode($output);
+    return $data[0]->anime->name;
+}
 
 if($text){
     if ($text == "/start") {
@@ -24,6 +40,9 @@ if($text){
         }else{
             $reply = "Hello, anon";
         }
+        $telegram->sendMessage([ 'chat_id' => $chat_id, 'text' => $reply ]);
+    }elseif ($text == "Next anime") {
+        $reply = "Ближайшее выхожящее в эфир аниме: \"".getNextAnime()."\"";
         $telegram->sendMessage([ 'chat_id' => $chat_id, 'text' => $reply ]);
     }
 }else{
