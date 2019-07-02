@@ -21,7 +21,7 @@ if ($text) {
 
         $sql = "INSERT IGNORE INTO `users`(
                     `chatid`,
-                    `user`
+                    `userid`
                     )
             VALUES (
             '".$chat_id."',
