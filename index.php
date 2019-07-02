@@ -27,6 +27,9 @@ if ($text) {
             '".$chat_id."',
             '".$user_id."'
             )";
+        if($mysqlli->query($sql) === FALSE) {
+            error_log("Error: ".$sql.PHP_EOL.$mysqlli->error);
+        }
 
         $reply = "Добро пожаловать в бота!";
         $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => false]);
