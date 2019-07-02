@@ -8,30 +8,16 @@ $result = $telegram->getWebhookUpdates(); //Передаем в переменн
 $text = $result["message"]["text"]; //Текст сообщения
 $chat_id = $result["message"]["chat"]["id"]; //Уникальный идентификатор пользователя
 $name = $result["message"]["from"]["username"]; //Юзернейм пользователя
-$keyboard = [["Hello World!"], ["Hello, username"], ["Next anime"]]; //Клавиатура
-
-function getNextAnime(): string
-{
-    // create curl resource
-    $ch = curl_init();
-    // set url
-    curl_setopt($ch, CURLOPT_URL, "https://shikimori.one/api/calendar");
-    //return the transfer as a string
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    // $output contains the output string
-    $output = curl_exec($ch);
-    // close curl resource to free up system resources
-    curl_close($ch);
-
-    $data = json_decode($output);
-    return $data[0]->anime->name;
-}
+$keyboard = [["Посмотреть список онгоингов"], ["Посмотреть список отслеживаемого"], ["Hello, username"]]; //Клавиатура
 
 if ($text) {
     if ($text == "/start") {
         $reply = "Добро пожаловать в бота!";
         $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => false]);
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $reply_markup]);
+    } elseif ($text == "/help") {
+        $reply = "Добро пожаловать в бота!\n Он предназначерн для отслеживания выходящих в эфир anime сериалов";
+        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
     } elseif ($text == "Hello World!") {
         $reply = "Hello World!";
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
