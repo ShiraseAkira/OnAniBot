@@ -6,8 +6,7 @@ $telegram = new Api('639677299:AAEIo8bfRnC5axKEUuJG1l_LuBSHLmSD3ao'); //Уста
 $result = $telegram->getWebhookUpdates(); //Передаем в переменную $result полную информацию о сообщении пользователя
 
 $text = $result["message"]["text"]; //Текст сообщения
-$chat_id = $result["message"]["chat"]["id"]; //Уникальный идентификатор чата
-$user_id = $result["message"]["user"]["id"]; //Уникальный идентификатор пользователя
+$chat_id = $result["message"]["chat"]["id"]; //Уникальный идентификатор пользователя
 $name = $result["message"]["from"]["username"]; //Юзернейм пользователя
 $keyboard = [["Посмотреть список онгоингов"], ["Посмотреть список отслеживаемого"], ["Hello, username"]]; //Клавиатура
 
@@ -20,12 +19,10 @@ if ($text) {
         }
 
         $sql = "INSERT IGNORE INTO `users`(
-                    `chatid`,
-                    `userid`
+                    `chatid`
                     )
             VALUES (
-            '".$chat_id."',
-            '".$user_id."'
+            '".$chat_id."'
             )";
         if($mysqlli->query($sql) === FALSE) {
             error_log("Error: ".$sql.PHP_EOL.$mysqlli->error);
