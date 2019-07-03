@@ -35,8 +35,26 @@ if ($text) {
         $reply = "Добро пожаловать в бота!\nОн предназначерн для отслеживания выходящих в эфир anime сериалов.";
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
     } elseif ($text == "Посмотреть список онгоингов") {
-        $reply = "Список онгоингов";
+
+        $mysqlli = new mysqli("eu-cdbr-west-02.cleardb.net", "b2b48db1e8befd",
+            "8113a8b7", "heroku_717c9367403bbb5");
+        if($mysqlli->connect_errno) {
+            error_log("Ошибка: " . $mysqlli->connect_errno);
+        }
+
+        $sql = "SELECT anime.name FROM `anime` LIMIT 5";
+
+        if(!$result = $mysqlli->query($sql)) {
+            error_log("Error: ".$sql.PHP_EOL.$mysqlli->error);
+        }
+
+        $reply = "В данный момент выходят сериалы:".PHP_EOL;
+        while($message = $result->fetch_object()){
+            $reply .= $message->name.PHP_EOL;
+        }
+        
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
+
     } elseif ($text == "Посмотреть список отслеживаемого") {
         $reply = "Список отслеживаемого";
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
