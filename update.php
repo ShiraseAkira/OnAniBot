@@ -15,7 +15,7 @@ foreach ($schedule as $scheduleItem) {
         if(updateAnimeList($database, $shikiid, $name, $shikiurl, $episodesAired)) {
             error_log("updated\n");
             if($database->affected_rows){
-                error_log("row affected\n".shikiid);
+                error_log("row affected\n".$shikiid);
                 updateNotificationList($database, $shikiid);
             }
         }
