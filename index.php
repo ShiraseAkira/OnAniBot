@@ -10,6 +10,10 @@ $chat_id = $result["message"]["chat"]["id"]; //Уникальный иденти
 $name = $result["message"]["from"]["username"]; //Юзернейм пользователя
 $keyboard = [["Посмотреть список онгоингов"], ["Посмотреть список отслеживаемого"]]; //Клавиатура
 
+if($result->isType('callback_query')) {
+    $telegram->sendMessage(['chat_id' => $result->callbackQuery->from->id, 'text' => $result->callbackQuery->data])
+}
+
 if ($text) {
     if ($text == "/start") {
         $mysqlli = new mysqli("eu-cdbr-west-02.cleardb.net", "b2b48db1e8befd",
@@ -37,7 +41,7 @@ if ($text) {
             ]
         ]);
         $reply = "Добро пожаловать в бота!";
-//        $reply_markup = $telegram->inlineKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => false]);
+//        $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => false]);
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' =>  $inline_keyboard]);
     } elseif ($text == "/help") {
         $reply = "Добро пожаловать в бота!\nОн предназначерн для отслеживания выходящих в эфир anime сериалов.";
