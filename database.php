@@ -89,6 +89,6 @@ function getOngoingList($database){
 function getShikiidByNumberInList($database, $numberInList) {
     $sql = "SELECT `shikiid` 
             FROM `anime`
-            LIMIT '".($numberInList - 1)."', 1";
+            LIMIT ".($numberInList - 1).", 1";
     return getDataFromDatabase($database, $sql);
 }
