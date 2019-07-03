@@ -10,8 +10,8 @@ $chat_id = $result["message"]["chat"]["id"]; //Уникальный иденти
 $name = $result["message"]["from"]["username"]; //Юзернейм пользователя
 $keyboard = [["Посмотреть список онгоингов"], ["Посмотреть список отслеживаемого"]]; //Клавиатура
 
-if($result->isType('callback_query')) {
-    $telegram->sendMessage(['chat_id' => $result->callbackQuery->from->id, 'text' => $result->callbackQuery->data]);
+if($result->callback_query) {
+    $telegram->sendMessage(['chat_id' => 819237307, 'text' => $result->callbackQuery->data]);
 }
 
 if ($text) {
