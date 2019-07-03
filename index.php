@@ -11,7 +11,7 @@ $name = $result["message"]["from"]["username"]; //Юзернейм пользо�
 $keyboard = [["Посмотреть список онгоингов"], ["Посмотреть список отслеживаемого"]]; //Клавиатура
 
 if($result->isType('callback_query')) {
-    $telegram->sendMessage(['chat_id' => $result->callbackQuery->from->id, 'text' => $result->callbackQuery->data])
+    $telegram->sendMessage(['chat_id' => $result->callbackQuery->from->id, 'text' => $result->callbackQuery->data]);
 }
 
 if ($text) {
