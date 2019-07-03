@@ -1,6 +1,6 @@
 <?php
-$mysqlli = new mysqli("localhost", "root",
-    "", "bot");
+$mysqlli = new mysqli("eu-cdbr-west-02.cleardb.net", "b2b48db1e8befd",
+    "8113a8b7", "heroku_717c9367403bbb5");
 if($mysqlli->connect_errno) {
     error_log("Ошибка: " . $mysqlli->connect_errno);
 }
