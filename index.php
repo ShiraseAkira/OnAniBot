@@ -34,17 +34,17 @@ if ($text) {
             error_log("Error: ".$sql.PHP_EOL.$mysqlli->error);
         }
 
-//        $inline_keyboard = json_encode([
-//            'inline_keyboard'=>[
-//                [
-//                ['text'=>'Посмотреть список онгоингов', 'callback_data'=>'1'],
-//                ['text'=>'Посмотреть список онгоингов', 'callback_data'=>'2']
-//                ],
-//            ]
-//        ]);
+        $inline_keyboard = json_encode([
+            'inline_keyboard'=>[
+                [
+                ['text'=>'Посмотреть список онгоингов', 'callback_data'=>'1'],
+                ['text'=>'Посмотреть список онгоингов', 'callback_data'=>'2']
+                ],
+            ]
+        ]);
         $reply = "Добро пожаловать в бота!";
-        $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => false]);
-        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $reply_markup]);
+//        $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => false]);
+        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $inline_keyboard]);
     } elseif ($text == "/help") {
         $reply = "Добро пожаловать в бота!\nОн предназначерн для отслеживания выходящих в эфир anime сериалов.";
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
