@@ -56,7 +56,7 @@ if ($text) {
             $reply .= $i.") ". $message->name.PHP_EOL;
             array_push($keyboard[$row], "".$i);
             $i++;
-            if (intdiv($i, 8) AND !($i % 8)) {
+            if (intdiv($i - 1, 6) AND !(($i-1) % 6)) {
                 array_push($keyboard, []);
                 $row++;
             }
