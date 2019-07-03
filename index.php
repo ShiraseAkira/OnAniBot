@@ -50,16 +50,17 @@ if ($text) {
 
         $i = 1;
         $row = 0;
-        $cols = 8;
+        $col = 0;
         $keyboard = [[]];
         $reply = "В данный момент выходят сериалы:".PHP_EOL;
         while($message = $result->fetch_object()){
             $reply .= $i.") ". $message->name.PHP_EOL;
-            array_push($keyboard[$row], "".$i);
+            $keyboard[$row][$col] = $i;
             error_log(var_dump($keyboard));
             $i++;
-            if ($i % $cols){
-                array_push($keyboard, []);
+            $col++;
+            if ($col % 8){
+                $col = 0;
                 $row++;
             }
         }
