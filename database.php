@@ -68,5 +68,6 @@ function updateNotificationList($database, $shikiid) {
     $sql = "INSERT IGNORE INTO `notifications`
             SELECT `watchlistid` FROM `watchlist`
             WHERE `shikiid` = '".$shikiid."'";
+    error_log("updNotList worked);
     return updateDataInDatabase($database, $sql);
 }
