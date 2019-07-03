@@ -26,15 +26,15 @@ if ($text) {
         $database = getDatabaseConnection();
         $ongoingList = getOngoingList($database);
 
-        $buttonindex = 1;
+        $animeindex = 1;
         $row = 0;
         $keyboard = [[]];
         $reply = "В данный момент выходят сериалы:".PHP_EOL;
         while($ongoing = $ongoingList->fetch_object()){
-            $reply .= $buttonindex.") ". $ongoing->name.PHP_EOL;
-            array_push($keyboard[$row], "/add ".$buttonindex);
-            $buttonindex++;
-            if (intdiv($buttonindex - 1, 5) AND !(($buttonindex-1) % 5)) {
+            $reply .= $animeindex.") ". $ongoing->name.PHP_EOL;
+            array_push($keyboard[$row], "/add ".$animeindex);
+            $animeindex++;
+            if (intdiv($animeindex - 1, 5) AND !(($animeindex - 1) % 5)) {
                 array_push($keyboard, []);
                 $row++;
             }
@@ -43,7 +43,6 @@ if ($text) {
             ."или введите /start для возврата.";
         $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => true]);
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $reply_markup]);
-
     } elseif (substr($text, 0, "5") === "/add ") {
         $numberInList = (int)substr($text, 5);
 
@@ -57,8 +56,26 @@ if ($text) {
         $reply = "Сериал из списка под номером ".$numberInList." был добавлен в список отслеживаемого";
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
     } elseif ($text == "Посмотреть список отслеживаемого") {
-        $reply = "Список отслеживаемого";
-        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
+        $database = getDatabaseConnection();
+        $watchList = getWatchList($database, $chat_id);
+
+        $animeindex = 1;
+        $row = 0;
+        $keyboard = [[]];
+        $reply = "В данный момент вы отслеживаете сериалы:".PHP_EOL;
+        while($watch = $watchList->fetch_object()){
+            $reply .= $animeindex.") ". $watch->name.PHP_EOL;
+            array_push($keyboard[$row], "/add ".$animeindex);
+            $animeindex++;
+            if (intdiv($animeindex - 1, 5) AND !(($animeindex - 1) % 5)) {
+                array_push($keyboard, []);
+                $row++;
+            }
+        }
+        $reply .= "Нажмите соответсвующую кнопку, чтобы удалить сериал из списка отслеживаемого".PHP_EOL
+            ."или введите /start для возврата.";
+        $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => true]);
+        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $reply_markup]);
     }
 } else {
     $telegram->sendMessage(['chat_id' => $chat_id, 'text' => "Отправьте текстовое сообщение."]);

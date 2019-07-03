@@ -93,12 +93,19 @@ function getShikiidByNumberInList($database, $numberInList) {
     return getDataFromDatabase($database, $sql);
 }
 
-function addToWatchlist($database, $shikiid, $chat_id) {
+function addToWatchlist($database, $shikiid, $chatid) {
     $sql = "INSERT IGNORE INTO watchlist (
                             watchlist.chatid, watchlist.shikiid
                             )
             SELECT users.chatid, anime.shikiid
             FROM users, anime
-            WHERE users.chatid = ".$chat_id." AND anime.shikiid = ".$shikiid;
+            WHERE users.chatid = ".$chatid." AND anime.shikiid = ".$shikiid;
     return updateDataInDatabase($database, $sql);
+}
+
+function getWatchList($database, $chatid) {
+    $sql = "SELECT anime.name 
+            FROM anime, watchlist
+            WHERE anime.shikiid = watchlist.shikiid AND watchlist.chatid = ".$chatid;
+    return getDataFromDatabase($database, $sql);
 }
