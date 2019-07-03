@@ -54,7 +54,7 @@ if ($text) {
         $reply = "В данный момент выходят сериалы:".PHP_EOL;
         while($message = $result->fetch_object()){
             $reply .= $i.") ". $message->name.PHP_EOL;
-            array_push($keyboard[$row], $i);
+            array_push($keyboard[$row], "".$i);
             $i++;
             if (intdiv($i, 8) AND !($i % 8)) {
                 array_push($keyboard, []);
