@@ -59,7 +59,7 @@ if ($text) {
             error_log(var_dump($keyboard));
             $i++;
             $col++;
-            if ($col % 8){
+            if (intdiv($col, 8)) {
                 $col = 0;
                 $row++;
             }
