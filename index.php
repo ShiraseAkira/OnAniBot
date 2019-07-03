@@ -56,7 +56,7 @@ if ($text) {
             $reply .= $i.") ". $message->name.PHP_EOL;
             array_push($keyboard[$row], "/add ".$i);
             $i++;
-            if (intdiv($i - 1, 6) AND !(($i-1) % 6)) {
+            if (intdiv($i - 1, 5) AND !(($i-1) % 5)) {
                 array_push($keyboard, []);
                 $row++;
             }
@@ -66,6 +66,9 @@ if ($text) {
         $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => true]);
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $reply_markup]);
 
+    } elseif (substr($text, 0, "5") === "/add ") {
+        $reply = "Добавляем";
+        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
     } elseif ($text == "Посмотреть список отслеживаемого") {
         $reply = "Список отслеживаемого";
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
