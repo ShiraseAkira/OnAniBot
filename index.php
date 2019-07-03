@@ -45,7 +45,12 @@ if ($text) {
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $reply_markup]);
 
     } elseif (substr($text, 0, "5") === "/add ") {
-        $reply = "Добавляем ".(int)substr($text, 5);// TODO добавление отслеживаемого сериала в БД
+        $numberInList = (int)substr($text, 5);
+
+        $database = getDatabaseConnection();
+        $shikiid = getShikiidByNumberInList($database, $numberInList);
+
+        $reply = "Добавляем ".$numberInList." с shikiid ".$shikiid;
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
     } elseif ($text == "Посмотреть список отслеживаемого") {
         $reply = "Список отслеживаемого";
