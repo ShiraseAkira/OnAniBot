@@ -48,7 +48,9 @@ if ($text) {
         $numberInList = (int)substr($text, 5);
 
         $database = getDatabaseConnection();
-        $shikiid = getShikiidByNumberInList($database, $numberInList);
+        $shikiidReply = getShikiidByNumberInList($database, $numberInList);
+        $shikiidObj = $shikiidReply->fetch_object();
+        $shikiid = $shikiidObj->shikiid;
 
         $reply = "Добавляем ".$numberInList." с shikiid ".$shikiid;
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
