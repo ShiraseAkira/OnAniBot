@@ -29,7 +29,7 @@ if ($text) {
         }
 
         $reply = "Добро пожаловать в бота!";
-        $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => false]);
+        $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => true]);
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $reply_markup]);
     } elseif ($text == "/help") {
         $reply = "Добро пожаловать в бота!\nОн предназначерн для отслеживания выходящих в эфир anime сериалов.";
@@ -48,11 +48,15 @@ if ($text) {
             error_log("Error: ".$sql.PHP_EOL.$mysqlli->error);
         }
 
+        $i = 1;
+        $keyboard = [];
         $reply = "В данный момент выходят сериалы:".PHP_EOL;
         while($message = $result->fetch_object()){
-            $reply .= $message->name.PHP_EOL;
+            $reply .=$i.") ". $message->name.PHP_EOL;
+            array_push($keyboard, ["".$i]);
         }
-        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
+        $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => true]);
+        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $reply_markup]);
 
     } elseif ($text == "Посмотреть список отслеживаемого") {
         $reply = "Список отслеживаемого";
