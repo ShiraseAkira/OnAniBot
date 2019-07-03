@@ -67,7 +67,7 @@ if ($text) {
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $reply_markup]);
 
     } elseif (substr($text, 0, "5") === "/add ") {
-        $reply = "Добавляем";
+        $reply = "Добавляем".substr($text, 6);// TODO добавление отслеживаемого сериала в БД
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
     } elseif ($text == "Посмотреть список отслеживаемого") {
         $reply = "Список отслеживаемого";
