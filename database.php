@@ -45,3 +45,28 @@ function truncateMailingList($database) {
     $sql = "TRUNCATE `notifications`";
     return updateDataInDatabase($database, $sql);
 }
+
+function updateAnimeList($database, $shikiid, $name, $shikiurl, $episodesAired) {
+    $sql = "INSERT INTO `anime`(
+                    `shikiid`,
+                    `name`,
+                    `url`,
+                    `episodesAired`
+                    )
+            VALUES (
+            '".$shikiid."',
+            '".$name."',
+            '".$shikiurl."',
+            '".$episodesAired."'
+            )
+            ON DUPLICATE KEY UPDATE
+            `episodesAired` = '".$episodesAired."'";
+    return updateDataInDatabase($database, $sql);
+}
+
+function updateNotificationList($database, $shikiid) {
+    $sql = "INSERT IGNORE INTO `notifications`
+            SELECT `watchlistid` FROM `watchlist`
+            WHERE `shikiid` = '".$shikiid."'";
+    return updateDataInDatabase($database, $sql);
+}
