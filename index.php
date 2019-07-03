@@ -54,13 +54,15 @@ if ($text) {
         $reply = "В данный момент выходят сериалы:".PHP_EOL;
         while($message = $result->fetch_object()){
             $reply .= $i.") ". $message->name.PHP_EOL;
-            array_push($keyboard[$row], "".$i);
+            array_push($keyboard[$row], "/add ".$i);
             $i++;
             if (intdiv($i - 1, 6) AND !(($i-1) % 6)) {
                 array_push($keyboard, []);
                 $row++;
             }
         }
+        $reply .= "Нажмите соответсвующую кнопку, чтобы добавить сериал в список отслеживаемого".PHP_EOL
+            ."или введите /start для возврата.";
         $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => true]);
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $reply_markup]);
 
