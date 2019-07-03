@@ -55,7 +55,6 @@ if ($text) {
         while($message = $result->fetch_object()){
             $reply .= $i.") ". $message->name.PHP_EOL;
             array_push($keyboard[$row], $i);
-//            error_log(var_dump($keyboard));
             $i++;
             if (intdiv($i, 8) AND !($i % 8)) {
                 array_push($keyboard, []);
