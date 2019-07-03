@@ -5,12 +5,6 @@ use Telegram\Bot\Api;
 $telegram = new Api('639677299:AAEIo8bfRnC5axKEUuJG1l_LuBSHLmSD3ao'); //Устанавливаем токен, полученный у BotFather
 $result = $telegram->getWebhookUpdates(); //Передаем в переменную $result полную информацию о сообщении пользователя
 
-error_log($result);
-
-if($result->callback_query) {
-    error_log("dropped in IF________________");
-    $telegram->sendMessage(['chat_id' => $result->callback_query->from->id, 'text' => $result->callback_query->data]);
-}
 $text = $result["message"]["text"]; //Текст сообщения
 $chat_id = $result["message"]["chat"]["id"]; //Уникальный идентификатор пользователя
 $name = $result["message"]["from"]["username"]; //Юзернейм пользователя
@@ -34,17 +28,9 @@ if ($text) {
             error_log("Error: ".$sql.PHP_EOL.$mysqlli->error);
         }
 
-        $inline_keyboard = json_encode([
-            'inline_keyboard'=>[
-                [
-                ['text'=>'Посмотреть список онгоингов', 'callback_data'=>'1'],
-                ['text'=>'Посмотреть список онгоингов', 'callback_data'=>'2']
-                ],
-            ]
-        ]);
         $reply = "Добро пожаловать в бота!";
-//        $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => false]);
-        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $inline_keyboard]);
+        $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => false]);
+        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $reply_markup]);
     } elseif ($text == "/help") {
         $reply = "Добро пожаловать в бота!\nОн предназначерн для отслеживания выходящих в эфир anime сериалов.";
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
@@ -56,7 +42,7 @@ if ($text) {
             error_log("Ошибка: " . $mysqlli->connect_errno);
         }
 
-        $sql = "SELECT anime.name FROM `anime` LIMIT 5";
+        $sql = "SELECT anime.name FROM `anime`";
 
         if(!$result = $mysqlli->query($sql)) {
             error_log("Error: ".$sql.PHP_EOL.$mysqlli->error);
