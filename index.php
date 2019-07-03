@@ -52,7 +52,9 @@ if ($text) {
         $shikiidObj = $shikiidReply->fetch_object();
         $shikiid = $shikiidObj->shikiid;
 
-        $reply = "Добавляем ".$numberInList." с shikiid ".$shikiid;
+        addToWatchlist($database, $shikiid, $chat_id);
+
+        $reply = "Сериал из списка под номером ".$numberInList." был добавлен в список отслеживаемого";
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
     } elseif ($text == "Посмотреть список отслеживаемого") {
         $reply = "Список отслеживаемого";
