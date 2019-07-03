@@ -8,13 +8,13 @@ $sql = "SELECT users.chatid, anime.name, anime.episodesAired
         AND watchlist.watchlistid = notifications.notificationid
         AND anime.shikiid = watchlist.shikiid";
 
-if(!$result = $databse >query($sql)) {
-    error_log("Error: ".$sql.PHP_EOL.$mysqlli->error);
+if(!$result = $databse->query($sql)) {
+    error_log("Error: ".$sql.PHP_EOL.$databse->error);
 }
 
 $sql = "TRUNCATE `notifications`";
 if(! $databse->query($sql)) {
-    error_log("Error: ".$sql.PHP_EOL.$mysqlli->error);
+    error_log("Error: ".$sql.PHP_EOL.$databse->error);
 }
 
 include('vendor/autoload.php'); //Подключаем библиотеку
