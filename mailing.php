@@ -8,12 +8,12 @@ $sql = "SELECT users.chatid, anime.name, anime.episodesAired
         AND watchlist.watchlistid = notifications.notificationid
         AND anime.shikiid = watchlist.shikiid";
 
-if(!$result = $mysqlli->query($sql)) {
+if(!$result = $databse >query($sql)) {
     error_log("Error: ".$sql.PHP_EOL.$mysqlli->error);
 }
 
 $sql = "TRUNCATE `notifications`";
-if(! $mysqlli->query($sql)) {
+if(! $databse->query($sql)) {
     error_log("Error: ".$sql.PHP_EOL.$mysqlli->error);
 }
 
