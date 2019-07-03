@@ -69,6 +69,6 @@ function updateNotificationList($database, $shikiid) {
             SELECT `watchlistid` FROM `watchlist`
             WHERE `shikiid` = '".$shikiid."'";
     $temp = updateDataInDatabase($database, $sql);
-    error_log("updNotList worked ". $temp);
+    error_log("updNotList worked \n".$sql."\n".$temp);
     return $temp;
 }
