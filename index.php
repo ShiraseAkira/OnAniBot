@@ -7,15 +7,14 @@ $result = $telegram->getWebhookUpdates(); //Передаем в переменн
 
 error_log($result);
 
-$text = $result["message"]["text"]; //Текст сообщения
-$chat_id = $result["message"]["chat"]["id"]; //Уникальный идентификатор пользователя
-$name = $result["message"]["from"]["username"]; //Юзернейм пользователя
-$keyboard = [["Посмотреть список онгоингов"], ["Посмотреть список отслеживаемого"]]; //Клавиатура
-
 if($result->callback_query) {
     error_log("dropped in IF________________");
     $telegram->sendMessage(['chat_id' => $result->callback_query->from->id, 'text' => $result->callback_query->data]);
 }
+$text = $result["message"]["text"]; //Текст сообщения
+$chat_id = $result["message"]["chat"]["id"]; //Уникальный идентификатор пользователя
+$name = $result["message"]["from"]["username"]; //Юзернейм пользователя
+$keyboard = [["Посмотреть список онгоингов"], ["Посмотреть список отслеживаемого"]]; //Клавиатура
 
 if ($text) {
     if ($text == "/start") {
