@@ -8,7 +8,7 @@ $result = $telegram->getWebhookUpdates(); //Передаем в переменн
 $text = $result["message"]["text"]; //Текст сообщения
 $chat_id = $result["message"]["chat"]["id"]; //Уникальный идентификатор пользователя
 $name = $result["message"]["from"]["username"]; //Юзернейм пользователя
-$keyboard = [["Посмотреть список онгоингов"], ["Посмотреть список отслеживаемого"], ["Hello, username"]]; //Клавиатура
+$keyboard = [["Посмотреть список онгоингов"], ["Посмотреть список отслеживаемого"]]; //Клавиатура
 
 if ($text) {
     if ($text == "/start") {
@@ -34,12 +34,11 @@ if ($text) {
     } elseif ($text == "/help") {
         $reply = "Добро пожаловать в бота!\nОн предназначерн для отслеживания выходящих в эфир anime сериалов.";
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
-    } elseif ($text == "Hello, username") {
-        if ($name) {
-            $reply = "Hello, " . $name;
-        } else {
-            $reply = "Hello, anon";
-        }
+    } elseif ($text == "Посмотреть список онгоингов") {
+        $reply = "Список онгоингов";
+        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
+    } elseif ($text == "Посмотреть список отслеживаемого") {
+        $reply = "Список отслеживаемого";
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
     }
 } else {
