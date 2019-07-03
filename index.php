@@ -29,7 +29,7 @@ if ($text) {
         }
 
         $reply = "Добро пожаловать в бота!";
-        $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => false]);
+        $reply_markup = $telegram->inlineKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => false]);
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $reply_markup]);
     } elseif ($text == "/help") {
         $reply = "Добро пожаловать в бота!\nОн предназначерн для отслеживания выходящих в эфир anime сериалов.";
@@ -52,7 +52,7 @@ if ($text) {
         while($message = $result->fetch_object()){
             $reply .= $message->name.PHP_EOL;
         }
-        
+        $telegram->inlineKeyboardMarkup()
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
 
     } elseif ($text == "Посмотреть список отслеживаемого") {
