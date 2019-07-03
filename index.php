@@ -55,14 +55,14 @@ if ($text) {
         $reply = "В данный момент выходят сериалы:".PHP_EOL;
         while($message = $result->fetch_object()){
             $reply .= $i.") ". $message->name.PHP_EOL;
-            $keyboard[$row][$col] = $i;
-            error_log(var_dump($keyboard));
-            $i++;
-            $col++;
-            if (intdiv($col, 8)) {
-                $col = 0;
-                $row++;
-            }
+            $keyboard[1][1] = 3;
+//            error_log(var_dump($keyboard));
+//            $i++;
+//            $col++;
+//            if (intdiv($col, 8)) {
+//                $col = 0;
+//                $row++;
+//            }
         }
         $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => true]);
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $reply_markup]);
