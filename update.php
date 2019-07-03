@@ -13,7 +13,9 @@ foreach ($schedule as $scheduleItem) {
 
     if($scheduleItem->anime->status == "ongoing" || $scheduleItem->anime->status == "release") {
         if(updateAnimeList($database, $shikiid, $name, $shikiurl, $episodesAired)) {
+            error_log("updated\n");
             if($database->affected_rows){
+                error_log("row affected\n".shikiid);
                 updateNotificationList($database, $shikiid);
             }
         }
