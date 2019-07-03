@@ -70,3 +70,18 @@ function updateNotificationList($database, $shikiid) {
             WHERE `shikiid` = '".$shikiid."'";
     return updateDataInDatabase($database, $sql);
 }
+
+function checkIfNewUserAndAdd($database, $chat_id) {
+    $sql = "INSERT IGNORE INTO `users`(
+                    `chatid`
+                    )
+            VALUES (
+            '".$chat_id."'
+            )";
+    return updateDataInDatabase($database, $sql);
+}
+
+function getOngoingList($database){
+    $sql = "SELECT anime.name FROM `anime`";
+    return getDataFromDatabase($database, $sql);
+}

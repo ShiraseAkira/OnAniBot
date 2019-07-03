@@ -1,4 +1,5 @@
 <?php
+require_once ("database.php");
 include('vendor/autoload.php'); //Подключаем библиотеку
 use Telegram\Bot\Api;
 
@@ -12,21 +13,8 @@ $keyboard = [["Посмотреть список онгоингов"], ["Пос�
 
 if ($text) {
     if ($text == "/start") {
-        $mysqlli = new mysqli("eu-cdbr-west-02.cleardb.net", "b2b48db1e8befd",
-            "8113a8b7", "heroku_717c9367403bbb5");
-        if($mysqlli->connect_errno) {
-            error_log("Ошибка: " . $mysqlli->connect_errno);
-        }
-
-        $sql = "INSERT IGNORE INTO `users`(
-                    `chatid`
-                    )
-            VALUES (
-            '".$chat_id."'
-            )";
-        if($mysqlli->query($sql) === FALSE) {
-            error_log("Error: ".$sql.PHP_EOL.$mysqlli->error);
-        }
+        $database = getDatabaseConnection();
+        checkIfNewUserAndAdd($database, $chat_id);
 
         $reply = "Добро пожаловать в бота!";
         $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => true]);
@@ -35,28 +23,18 @@ if ($text) {
         $reply = "Добро пожаловать в бота!\nОн предназначерн для отслеживания выходящих в эфир anime сериалов.";
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
     } elseif ($text == "Посмотреть список онгоингов") {
+        $database = getDatabaseConnection();
+        $ongoingList = getOngoingList($database);
 
-        $mysqlli = new mysqli("eu-cdbr-west-02.cleardb.net", "b2b48db1e8befd",
-            "8113a8b7", "heroku_717c9367403bbb5");
-        if($mysqlli->connect_errno) {
-            error_log("Ошибка: " . $mysqlli->connect_errno);
-        }
-
-        $sql = "SELECT anime.name FROM `anime`";
-
-        if(!$result = $mysqlli->query($sql)) {
-            error_log("Error: ".$sql.PHP_EOL.$mysqlli->error);
-        }
-
-        $i = 1;
+        $buttonindex = 1;
         $row = 0;
         $keyboard = [[]];
         $reply = "В данный момент выходят сериалы:".PHP_EOL;
-        while($message = $result->fetch_object()){
-            $reply .= $i.") ". $message->name.PHP_EOL;
-            array_push($keyboard[$row], "/add ".$i);
-            $i++;
-            if (intdiv($i - 1, 5) AND !(($i-1) % 5)) {
+        while($ongoing = $ongoingList->fetch_object()){
+            $reply .= $buttonindex.") ". $ongoing->name.PHP_EOL;
+            array_push($keyboard[$row], "/add ".$buttonindex);
+            $buttonindex++;
+            if (intdiv($buttonindex - 1, 5) AND !(($buttonindex-1) % 5)) {
                 array_push($keyboard, []);
                 $row++;
             }
