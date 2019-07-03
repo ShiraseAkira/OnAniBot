@@ -113,6 +113,7 @@ function getWatchList($database, $chatid) {
 function getWatchlistItemByNumberInList($database, $numberInList) {
     $sql = "SELECT watchlistid 
             FROM watchlist
+            ORDER BY shikiid
             LIMIT ".($numberInList - 1).", 1";
     return getDataFromDatabase($database, $sql);
 }
