@@ -52,7 +52,6 @@ if ($text) {
         while($message = $result->fetch_object()){
             $reply .= $message->name.PHP_EOL;
         }
-        $telegram->inlineKeyboardMarkup()
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
 
     } elseif ($text == "Посмотреть список отслеживаемого") {
