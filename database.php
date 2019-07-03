@@ -109,3 +109,16 @@ function getWatchList($database, $chatid) {
             WHERE anime.shikiid = watchlist.shikiid AND watchlist.chatid = ".$chatid;
     return getDataFromDatabase($database, $sql);
 }
+
+function getWatchlistItemByNumberInList($database, $numberInList) {
+    $sql = "SELECT watchlistid 
+            FROM watchlist
+            LIMIT ".($numberInList - 1).", 1";
+    return getDataFromDatabase($database, $sql);
+}
+
+function removeFromWatchlist($database, $watchlistid) {
+    $sql = "DELETE FROM watchlist
+            WHERE watchlistid = ".$watchlistid;
+    return updateDataInDatabase($database, $sql);
+}
