@@ -30,8 +30,10 @@ if ($text) {
 
         $inline_keyboard = json_encode([
             'inline_keyboard'=>[
+                [
                 ['text'=>'Посмотреть список онгоингов', 'callback_data'=>'1'],
                 ['text'=>'Посмотреть список онгоингов', 'callback_data'=>'2']
+                ],
             ]
         ]);
         $reply = "Добро пожаловать в бота!";
