@@ -56,12 +56,13 @@ if ($text) {
         while($message = $result->fetch_object()){
             $reply .= $i.") ". $message->name.PHP_EOL;
             array_push($keyboard[$row], "".$i);
+            error_log(var_dump($keyboard));
             $i++;
             if ($i % $cols){
+                array_push($keyboard, []);
                 $row++;
             }
         }
-        error_log(var_dump($keyboard));
         $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => true]);
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $reply_markup]);
 
