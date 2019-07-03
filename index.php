@@ -5,14 +5,16 @@ use Telegram\Bot\Api;
 $telegram = new Api('639677299:AAEIo8bfRnC5axKEUuJG1l_LuBSHLmSD3ao'); //Устанавливаем токен, полученный у BotFather
 $result = $telegram->getWebhookUpdates(); //Передаем в переменную $result полную информацию о сообщении пользователя
 
+error_log($result);
+
 $text = $result["message"]["text"]; //Текст сообщения
 $chat_id = $result["message"]["chat"]["id"]; //Уникальный идентификатор пользователя
 $name = $result["message"]["from"]["username"]; //Юзернейм пользователя
 $keyboard = [["Посмотреть список онгоингов"], ["Посмотреть список отслеживаемого"]]; //Клавиатура
 
-if($result->callback_query) {
-    $telegram->sendMessage(['chat_id' => '819237307', 'text' => $result->callback_query->data]);
-}
+//if($result->callback_query) {
+//    $telegram->sendMessage(['chat_id' => '819237307', 'text' => $result->callback_query->data]);
+//}
 
 if ($text) {
     if ($text == "/start") {
@@ -32,17 +34,17 @@ if ($text) {
             error_log("Error: ".$sql.PHP_EOL.$mysqlli->error);
         }
 
-        $inline_keyboard = json_encode([
-            'inline_keyboard'=>[
-                [
-                ['text'=>'Посмотреть список онгоингов', 'callback_data'=>'1'],
-                ['text'=>'Посмотреть список онгоингов', 'callback_data'=>'2']
-                ],
-            ]
-        ]);
+//        $inline_keyboard = json_encode([
+//            'inline_keyboard'=>[
+//                [
+//                ['text'=>'Посмотреть список онгоингов', 'callback_data'=>'1'],
+//                ['text'=>'Посмотреть список онгоингов', 'callback_data'=>'2']
+//                ],
+//            ]
+//        ]);
         $reply = "Добро пожаловать в бота!";
-//        $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => false]);
-        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' =>  $inline_keyboard]);
+        $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => false]);
+        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $reply_markup]);
     } elseif ($text == "/help") {
         $reply = "Добро пожаловать в бота!\nОн предназначерн для отслеживания выходящих в эфир anime сериалов.";
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
