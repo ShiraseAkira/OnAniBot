@@ -82,7 +82,7 @@ function checkIfNewUserAndAdd($database, $chatId): ?bool {
 }
 
 function getOngoingList($database): ?object {
-    $sql = "SELECT anime.name, anime.shikiid 
+    $sql = "SELECT anime.name, anime.shikiid, anime.url
             FROM `anime`";
     return getDataFromDatabase($database, $sql);
 }

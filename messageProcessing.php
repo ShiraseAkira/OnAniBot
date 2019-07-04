@@ -1,9 +1,11 @@
 <?php
+const shikimoriUrl = "https://shikimori.one";
 const ongoingListButton = "Посмотреть список онгоингов";
 const watchListButton = "Посмотреть список отслеживаемого";
 
 function processNonTextMessage($telegram, $chatId): void {
-    $telegram->sendMessage(['chat_id' => $chatId, 'text' => "Отправьте текстовое сообщение."]);
+    $reply = "Отправьте текстовое сообщение.";
+    $telegram->sendMessage(['chat_id' => $chatId, 'text' => $reply]);
 }
 
 function processNonCommandMessage($telegram, $chatId): void {
@@ -35,10 +37,12 @@ function processWatchOngoingListCommand($telegram, $chatId): void {
     $listIndex = 1;
     $reply = "В данный момент выходят сериалы:".PHP_EOL;
     while($ongoing = $ongoingList->fetch_object()){
-        $reply .= $listIndex.") ".$ongoing->name." /add".$ongoing->shikiid.PHP_EOL;
+        $reply .= $listIndex.") ".$ongoing->name." /add_".$ongoing->shikiid." [подробнее...](".shikimoriUrl.
+            $ongoing->url.")".PHP_EOL;
         $listIndex++;
     }
 
-    $reply .= "Нажмите соответсвующую команду(/addXXX), чтобы добавить сериал в список отслеживаемого";
+    $reply .= PHP_EOL."Нажмите соответсвующую команду(/add_XXX), чтобы добавить сериал в список отслеживаемого".PHP_EOL.
+        "или на \"подробнее...\", чтобы перейти на сраницу с информацией.";
     $telegram->sendMessage(['chat_id' => $chatId, 'text' => $reply]);
 }
