@@ -1,4 +1,7 @@
 <?php
+const ongoingStatus = "ongoing";
+const releaseStatus = "release";
+
 require_once ("api.php");
 require_once ("database.php");
 $schedule = getSchedule();
@@ -6,15 +9,15 @@ $schedule = getSchedule();
 $database = getDatabaseConnection();
 
 foreach ($schedule as $scheduleItem) {
-    $shikiid = $scheduleItem->anime->id;
+    $shikiId = $scheduleItem->anime->id;
     $name = $scheduleItem->anime->name;
-    $shikiurl = $scheduleItem->anime->url;
+    $shikiUrl = $scheduleItem->anime->url;
     $episodesAired = $scheduleItem->anime->episodes_aired;
 
-    if($scheduleItem->anime->status == "ongoing" || $scheduleItem->anime->status == "release") {
-        if(updateAnimeList($database, $shikiid, $name, $shikiurl, $episodesAired)) {
+    if($scheduleItem->anime->status == ongoingStatus || $scheduleItem->anime->status == releaseStatus) {
+        if(updateAnimeList($database, $shikiId, $name, $shikiUrl, $episodesAired)) {
             if($database->affected_rows){
-                updateNotificationList($database, $shikiid);
+                updateNotificationList($database, $shikiId);
             }
         }
     }

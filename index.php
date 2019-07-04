@@ -1,15 +1,14 @@
 <?php
 require_once ("database.php");
-include('vendor/autoload.php'); //Подключаем библиотеку
+include('vendor/autoload.php');
 use Telegram\Bot\Api;
 
-$telegram = new Api('639677299:AAEIo8bfRnC5axKEUuJG1l_LuBSHLmSD3ao'); //Устанавливаем токен, полученный у BotFather
-$result = $telegram->getWebhookUpdates(); //Передаем в переменную $result полную информацию о сообщении пользователя
+$telegram = new Api('639677299:AAEIo8bfRnC5axKEUuJG1l_LuBSHLmSD3ao');
+$result = $telegram->getWebhookUpdates();
 
-$text = $result["message"]["text"]; //Текст сообщения
-$chat_id = $result["message"]["chat"]["id"]; //Уникальный идентификатор пользователя
-$name = $result["message"]["from"]["username"]; //Юзернейм пользователя
-$keyboard = [["Посмотреть список онгоингов"], ["Посмотреть список отслеживаемого"]]; //Клавиатура
+$text = $result["message"]["text"];
+$chat_id = $result["message"]["chat"]["id"];
+$keyboard = [["Посмотреть список онгоингов"], ["Посмотреть список отслеживаемого"]];
 
 if ($text) {
     if ($text == "/start") {
@@ -87,6 +86,9 @@ if ($text) {
         removeFromWatchlist($database, $watchlistid);
 
         $reply = "Сериал из списка под номером ".$numberInList." был удален из списока отслеживаемого";
+        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
+    } else {
+        $reply = "Используйте команду /start для начала работы с ботом".PHP_EOL."или /help для вызова справки";
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
     }
 } else {

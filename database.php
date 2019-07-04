@@ -46,7 +46,7 @@ function truncateMailingList($database) {
     return updateDataInDatabase($database, $sql);
 }
 
-function updateAnimeList($database, $shikiid, $name, $shikiurl, $episodesAired) {
+function updateAnimeList($database, $shikiId, $name, $shikiUrl, $episodesAired) {
     $sql = "INSERT INTO `anime`(
                     `shikiid`,
                     `name`,
@@ -54,9 +54,9 @@ function updateAnimeList($database, $shikiid, $name, $shikiurl, $episodesAired) 
                     `episodesAired`
                     )
             VALUES (
-            '".$shikiid."',
+            '".$shikiId."',
             '".$name."',
-            '".$shikiurl."',
+            '".$shikiUrl."',
             '".$episodesAired."'
             )
             ON DUPLICATE KEY UPDATE
@@ -64,19 +64,19 @@ function updateAnimeList($database, $shikiid, $name, $shikiurl, $episodesAired) 
     return updateDataInDatabase($database, $sql);
 }
 
-function updateNotificationList($database, $shikiid) {
+function updateNotificationList($database, $shikiId) {
     $sql = "INSERT IGNORE INTO `notifications`
             SELECT `watchlistid` FROM `watchlist`
-            WHERE `shikiid` = '".$shikiid."'";
+            WHERE `shikiid` = '".$shikiId."'";
     return updateDataInDatabase($database, $sql);
 }
 
-function checkIfNewUserAndAdd($database, $chat_id) {
+function checkIfNewUserAndAdd($database, $chatId) {
     $sql = "INSERT IGNORE INTO `users`(
                     `chatid`
                     )
             VALUES (
-            '".$chat_id."'
+            '".$chatId."'
             )";
     return updateDataInDatabase($database, $sql);
 }
@@ -93,20 +93,20 @@ function getShikiidByNumberInList($database, $numberInList) {
     return getDataFromDatabase($database, $sql);
 }
 
-function addToWatchlist($database, $shikiid, $chatid) {
+function addToWatchlist($database, $shikiId, $chatId) {
     $sql = "INSERT IGNORE INTO watchlist (
                             watchlist.chatid, watchlist.shikiid
                             )
             SELECT users.chatid, anime.shikiid
             FROM users, anime
-            WHERE users.chatid = ".$chatid." AND anime.shikiid = ".$shikiid;
+            WHERE users.chatid = ".$chatId." AND anime.shikiid = ".$shikiId;
     return updateDataInDatabase($database, $sql);
 }
 
-function getWatchList($database, $chatid) {
+function getWatchList($database, $chatId) {
     $sql = "SELECT anime.name 
             FROM anime, watchlist
-            WHERE anime.shikiid = watchlist.shikiid AND watchlist.chatid = ".$chatid;
+            WHERE anime.shikiid = watchlist.shikiid AND watchlist.chatid = ".$chatId;
     return getDataFromDatabase($database, $sql);
 }
 
@@ -118,8 +118,8 @@ function getWatchlistItemByNumberInList($database, $numberInList) {
     return getDataFromDatabase($database, $sql);
 }
 
-function removeFromWatchlist($database, $watchlistid) {
+function removeFromWatchlist($database, $watchlistId) {
     $sql = "DELETE FROM watchlist
-            WHERE watchlistid = ".$watchlistid;
+            WHERE watchlistid = ".$watchlistId;
     return updateDataInDatabase($database, $sql);
 }
