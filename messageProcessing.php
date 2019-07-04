@@ -3,6 +3,7 @@ const shikimoriUrl = "https://shikimori.one";
 const messageLengthCap = 3000;
 const ongoingListButton = "Посмотреть список онгоингов";
 const watchListButton = "Посмотреть список отслеживаемого";
+const parseMode = "HTML";
 
 function processNonTextMessage($telegram, $chatId): void {
     $reply = "Отправьте текстовое сообщение.";
@@ -34,8 +35,6 @@ function processHelpCommand($telegram, $chatId): void {
 function processWatchOngoingListCommand($telegram, $chatId): void {
     $database = getDatabaseConnection();
     $ongoingList = getOngoingList($database);
-    $parsemode = "HTML";
-
     $listIndex = 1;
     $reply = "В данный момент выходят сериалы:".PHP_EOL;
     while($ongoing = $ongoingList->fetch_object()){
@@ -43,15 +42,14 @@ function processWatchOngoingListCommand($telegram, $chatId): void {
             $ongoing->url."'>подробнее...</a>".PHP_EOL;
         $listIndex++;
         if(strlen($reply) > messageLengthCap) {
-            $telegram->sendMessage(['chat_id' => $chatId, 'text' => $reply, 'parse_mode' => $parsemode,
+            $telegram->sendMessage(['chat_id' => $chatId, 'text' => $reply, 'parse_mode' => parseMode,
                 'disable_web_page_preview' => true]);
             $reply = "";
         }
     }
-
     $reply .= PHP_EOL."Используйте соответсвующую команду, чтобы добавить сериал в список отслеживаемого".PHP_EOL.
         "или нажмите на \"подробнее...\", чтобы перейти на сраницу с информацией.";
-    $telegram->sendMessage(['chat_id' => $chatId, 'text' => $reply, 'parse_mode' => $parsemode,
+    $telegram->sendMessage(['chat_id' => $chatId, 'text' => $reply, 'parse_mode' => parseMode,
         'disable_web_page_preview' => true]);
 }
 

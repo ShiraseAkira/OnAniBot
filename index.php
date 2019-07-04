@@ -17,7 +17,6 @@ $result = $telegram->getWebhookUpdates();
 $text = $result["message"]["text"];
 $chatId = $result["message"]["chat"]["id"];
 
-
 if ($text) {
     if ($text == startCommand) {
         processStartCommand($telegram, $chatId);
