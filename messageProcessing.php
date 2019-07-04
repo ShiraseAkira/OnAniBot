@@ -49,8 +49,26 @@ function processWatchOngoingListCommand($telegram, $chatId): void {
         }
     }
 
-    $reply .= PHP_EOL."Нажмите соответсвующую команду(/add_XXX), чтобы добавить сериал в список отслеживаемого".PHP_EOL.
-        "или на \"подробнее...\", чтобы перейти на сраницу с информацией.";
+    $reply .= PHP_EOL."Используйте соответсвующую команду, чтобы добавить сериал в список отслеживаемого".PHP_EOL.
+        "или нажмите на \"подробнее...\", чтобы перейти на сраницу с информацией.";
     $telegram->sendMessage(['chat_id' => $chatId, 'text' => $reply, 'parse_mode' => $parsemode,
         'disable_web_page_preview' => true]);
+}
+
+function processWatchWatchListCommand($telegram, $chatId): void {
+    $database = getDatabaseConnection();
+    $watchList = getWatchList($database, $chatId);
+
+    $listIndex = 1;
+    $reply = "В данный момент вы отслеживаете сериалы:".PHP_EOL;
+    while($watch = $watchList->fetch_object()){
+        $reply .= $listIndex.") ". $watch->name." /remove_".$watch->shikiid.PHP_EOL;
+        $listIndex++;
+        if(strlen($reply) > messageLengthCap) {
+            $telegram->sendMessage(['chat_id' => $chatId, 'text' => $reply]);
+            $reply = "";
+        }
+    }
+    $reply .= "Используйте соответсвующую команду, чтобы удалить сериал из списка отслеживаемого";
+    $telegram->sendMessage(['chat_id' => $chatId, 'text' => $reply]);
 }

@@ -7,6 +7,7 @@ use Telegram\Bot\Api;
 const startCommand = "/start";
 const helpCommand = "/help";
 const watchOngoingListCommand = "Посмотреть список онгоингов";
+const watchWatchListCommand = "Посмотреть список отслеживаемого";
 
 $telegram = new Api('639677299:AAEIo8bfRnC5axKEUuJG1l_LuBSHLmSD3ao');
 $result = $telegram->getWebhookUpdates();
@@ -22,6 +23,8 @@ if ($text) {
         processHelpCommand($telegram, $chat_id);
     } elseif ($text == watchOngoingListCommand) {
         processWatchOngoingListCommand($telegram, $chat_id);
+    } elseif ($text == watchWatchListCommand) {
+        processWatchWatchListCommand($telegram, $chat_id);
     } elseif (substr($text, 0, 5) === "/add ") {
         $numberInList = (int)substr($text, 5);
 
@@ -34,26 +37,6 @@ if ($text) {
 
         $reply = "Сериал из списка под номером ".$numberInList." был добавлен в список отслеживаемого";
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
-    } elseif ($text == "Посмотреть список отслеживаемого") {
-        $database = getDatabaseConnection();
-        $watchList = getWatchList($database, $chat_id);
-
-        $animeindex = 1;
-        $row = 0;
-        $keyboard = [[]];
-        $reply = "В данный момент вы отслеживаете сериалы:".PHP_EOL;
-        while($watch = $watchList->fetch_object()){
-            $reply .= $animeindex.") ". $watch->name.PHP_EOL;
-            array_push($keyboard[$row], "/remove ".$animeindex);
-            $animeindex++;
-            if (intdiv($animeindex - 1, 5) AND !(($animeindex - 1) % 5)) {
-                array_push($keyboard, []);
-                $row++;
-            }
-        }
-        $reply .= "Нажмите соответсвующую команду, чтобы удалить сериал из списка отслеживаемого";
-        $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => true]);
-        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $reply_markup]);
     } elseif (substr($text, 0, 8) === "/remove ") {
         $numberInList = (int)substr($text, 8);
 

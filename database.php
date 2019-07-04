@@ -105,7 +105,7 @@ function addToWatchlist($database, $shikiId, $chatId): ?bool {
 }
 
 function getWatchList($database, $chatId): ?object {
-    $sql = "SELECT anime.name 
+    $sql = "SELECT anime.name, anime.shikiid 
             FROM anime, watchlist
             WHERE anime.shikiid = watchlist.shikiid AND watchlist.chatid = ".$chatId;
     return getDataFromDatabase($database, $sql);
