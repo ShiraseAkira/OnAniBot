@@ -15,25 +15,25 @@ $telegram = new Api('639677299:AAEIo8bfRnC5axKEUuJG1l_LuBSHLmSD3ao');
 $result = $telegram->getWebhookUpdates();
 
 $text = $result["message"]["text"];
-$chat_id = $result["message"]["chat"]["id"];
+$chatId = $result["message"]["chat"]["id"];
 
 
 if ($text) {
     if ($text == startCommand) {
-        processStartCommand($telegram, $chat_id);
+        processStartCommand($telegram, $chatId);
     } elseif ($text == helpCommand) {
-        processHelpCommand($telegram, $chat_id);
+        processHelpCommand($telegram, $chatId);
     } elseif ($text == watchOngoingListCommand) {
-        processWatchOngoingListCommand($telegram, $chat_id);
+        processWatchOngoingListCommand($telegram, $chatId);
     } elseif ($text == watchWatchListCommand) {
-        processWatchWatchListCommand($telegram, $chat_id);
+        processWatchWatchListCommand($telegram, $chatId);
     } elseif (substr($text, 0, 5) === addToWatchListCommand) {
-        processAddToWatchListCommand($telegram, $chat_id, $text);
+        processAddToWatchListCommand($telegram, $chatId, $text);
     } elseif (substr($text, 0, 8) === removeFromWatchListCommand) {
-
+        processRemoveFromWatchListCommand($telegram, $chatId, $text);
     } else {
-        processNonCommandMessage($telegram, $chat_id);
+        processNonCommandMessage($telegram, $chatId);
     }
 } else {
-    processNonTextMessage($telegram, $chat_id);
+    processNonTextMessage($telegram, $chatId);
 }
