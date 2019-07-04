@@ -21,26 +21,7 @@ if ($text) {
     } elseif ($text == helpCommand) {
         processHelpCommand($telegram, $chat_id);
     } elseif ($text == watchOngoingListCommand) {
-        $database = getDatabaseConnection();
-        $ongoingList = getOngoingList($database);
-
-        $animeindex = 1;
-        $row = 0;
-        $keyboard = [[]];
-        $reply = "В данный момент выходят сериалы:".PHP_EOL;
-        while($ongoing = $ongoingList->fetch_object()){
-            $reply .= $animeindex.") ". $ongoing->name.PHP_EOL;
-            array_push($keyboard[$row], "/add ".$animeindex);
-            $animeindex++;
-            if (intdiv($animeindex - 1, 5) AND !(($animeindex - 1) % 5)) {
-                array_push($keyboard, []);
-                $row++;
-            }
-        }
-        $reply .= "Нажмите соответсвующую кнопку, чтобы добавить сериал в список отслеживаемого".PHP_EOL
-            ."или введите /start для возврата.";
-        $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => true]);
-        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $reply_markup]);
+        processWatchOngoingListCommand($telegram, $chat_id);
     } elseif (substr($text, 0, 5) === "/add ") {
         $numberInList = (int)substr($text, 5);
 
