@@ -111,8 +111,8 @@ function getWatchList($database, $chatId): ?object {
     return getDataFromDatabase($database, $sql);
 }
 
-function removeFromWatchlist($database, $watchlistId): ?bool {
+function removeFromWatchlist($database, $shikiId, $chatId): ?bool {
     $sql = "DELETE FROM watchlist
-            WHERE watchlistid = ".$watchlistId;
+            WHERE shikiid = ".$shikiId." AND chatid = ".$chatId;
     return updateDataInDatabase($database, $sql);
 }

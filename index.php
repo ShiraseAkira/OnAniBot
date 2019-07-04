@@ -30,17 +30,7 @@ if ($text) {
     } elseif (substr($text, 0, 5) === addToWatchListCommand) {
         processAddToWatchListCommand($telegram, $chat_id, $text);
     } elseif (substr($text, 0, 8) === removeFromWatchListCommand) {
-        $numberInList = (int)substr($text, 8);
 
-        $database = getDatabaseConnection();
-        $watchListReply = getWatchlistItemByNumberInList($database, $numberInList);
-        $watchListObj = $watchListReply ->fetch_object();
-        $watchlistid = $watchListObj->watchlistid;
-
-        removeFromWatchlist($database, $watchlistid);
-
-        $reply = "Сериал из списка под номером ".$numberInList." был удален из списока отслеживаемого.";
-        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
     } else {
         processNonCommandMessage($telegram, $chat_id);
     }
