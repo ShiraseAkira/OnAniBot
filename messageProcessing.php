@@ -1,5 +1,6 @@
 <?php
 const shikimoriUrl = "https://shikimori.one";
+const messageLengthCap = 3000;
 const ongoingListButton = "Посмотреть список онгоингов";
 const watchListButton = "Посмотреть список отслеживаемого";
 
@@ -40,6 +41,10 @@ function processWatchOngoingListCommand($telegram, $chatId): void {
         $reply .= $listIndex.") ".$ongoing->name." /add_".$ongoing->shikiid." [подробнее...](".shikimoriUrl.
             $ongoing->url.")".PHP_EOL;
         $listIndex++;
+        if(strlen($reply) > messageLengthCap) {
+            $telegram->sendMessage(['chat_id' => $chatId, 'text' => $reply]);
+            $reply = "";
+        }
     }
 
     $reply .= PHP_EOL."Нажмите соответсвующую команду(/add_XXX), чтобы добавить сериал в список отслеживаемого".PHP_EOL.
