@@ -34,6 +34,7 @@ function processHelpCommand($telegram, $chatId): void {
 function processWatchOngoingListCommand($telegram, $chatId): void {
     $database = getDatabaseConnection();
     $ongoingList = getOngoingList($database);
+    $parsemode = "Markdown";
 
     $listIndex = 1;
     $reply = "В данный момент выходят сериалы:".PHP_EOL;
@@ -42,12 +43,14 @@ function processWatchOngoingListCommand($telegram, $chatId): void {
             $ongoing->url.")".PHP_EOL;
         $listIndex++;
         if(strlen($reply) > messageLengthCap) {
-            $telegram->sendMessage(['chat_id' => $chatId, 'text' => $reply]);
+            $telegram->sendMessage(['chat_id' => $chatId, 'text' => $reply, 'parse_mode' => $parsemode,
+                'disable_web_page_preview' => true]);
             $reply = "";
         }
     }
 
     $reply .= PHP_EOL."Нажмите соответсвующую команду(/add_XXX), чтобы добавить сериал в список отслеживаемого".PHP_EOL.
         "или на \"подробнее...\", чтобы перейти на сраницу с информацией.";
-    $telegram->sendMessage(['chat_id' => $chatId, 'text' => $reply]);
+    $telegram->sendMessage(['chat_id' => $chatId, 'text' => $reply, 'parse_mode' => $parsemode,
+        'disable_web_page_preview' => true]);
 }
