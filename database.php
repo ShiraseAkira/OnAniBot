@@ -4,7 +4,7 @@ const dbUsername = "b2b48db1e8befd";
 const dbPasswd = "8113a8b7";
 const dbName = "heroku_717c9367403bbb5";
 
-function getDatabaseConnection() {
+function getDatabaseConnection(): ?object {
     $mysqlli = new mysqli(dbHost, dbUsername, dbPasswd, dbName);
     if($mysqlli->connect_errno) {
         error_log("Ошибка: " . $mysqlli->connect_errno);
@@ -14,7 +14,7 @@ function getDatabaseConnection() {
     }
 }
 
-function getDataFromDatabase($database, $sql) {
+function getDataFromDatabase($database, $sql): ?object {
     if(!$result = $database->query($sql)) {
         error_log("Error: ".$sql.PHP_EOL.$database->error);
         return NULL;
@@ -23,7 +23,7 @@ function getDataFromDatabase($database, $sql) {
     }
 }
 
-function updateDataInDatabase($database, $sql) {
+function updateDataInDatabase($database, $sql): ?bool {
     if(!$database->query($sql)) {
         error_log("Error: ".$sql.PHP_EOL.$database->error);
         return NULL;
@@ -32,7 +32,7 @@ function updateDataInDatabase($database, $sql) {
     }
 }
 
-function getMailingList($database) {
+function getMailingList($database): ?object {
     $sql = "SELECT users.chatid, anime.name, anime.episodesAired
         FROM `users`, `watchlist`, `notifications`, `anime`
         WHERE users.chatid = watchlist.chatid
@@ -41,12 +41,12 @@ function getMailingList($database) {
     return getDataFromDatabase($database, $sql);
 }
 
-function truncateMailingList($database) {
+function truncateMailingList($database): ?bool {
     $sql = "TRUNCATE `notifications`";
     return updateDataInDatabase($database, $sql);
 }
 
-function updateAnimeList($database, $shikiId, $name, $shikiUrl, $episodesAired) {
+function updateAnimeList($database, $shikiId, $name, $shikiUrl, $episodesAired): ?bool {
     $sql = "INSERT INTO `anime`(
                     `shikiid`,
                     `name`,
@@ -64,14 +64,14 @@ function updateAnimeList($database, $shikiId, $name, $shikiUrl, $episodesAired) 
     return updateDataInDatabase($database, $sql);
 }
 
-function updateNotificationList($database, $shikiId) {
+function updateNotificationList($database, $shikiId): ?bool {
     $sql = "INSERT IGNORE INTO `notifications`
             SELECT `watchlistid` FROM `watchlist`
             WHERE `shikiid` = '".$shikiId."'";
     return updateDataInDatabase($database, $sql);
 }
 
-function checkIfNewUserAndAdd($database, $chatId) {
+function checkIfNewUserAndAdd($database, $chatId): ?bool {
     $sql = "INSERT IGNORE INTO `users`(
                     `chatid`
                     )
@@ -81,19 +81,19 @@ function checkIfNewUserAndAdd($database, $chatId) {
     return updateDataInDatabase($database, $sql);
 }
 
-function getOngoingList($database){
+function getOngoingList($database): ?object {
     $sql = "SELECT anime.name FROM `anime`";
     return getDataFromDatabase($database, $sql);
 }
 
-function getShikiidByNumberInList($database, $numberInList) {
+function getShikiidByNumberInList($database, $numberInList): ?object {
     $sql = "SELECT `shikiid` 
             FROM `anime`
             LIMIT ".($numberInList - 1).", 1";
     return getDataFromDatabase($database, $sql);
 }
 
-function addToWatchlist($database, $shikiId, $chatId) {
+function addToWatchlist($database, $shikiId, $chatId): ?bool {
     $sql = "INSERT IGNORE INTO watchlist (
                             watchlist.chatid, watchlist.shikiid
                             )
@@ -103,14 +103,14 @@ function addToWatchlist($database, $shikiId, $chatId) {
     return updateDataInDatabase($database, $sql);
 }
 
-function getWatchList($database, $chatId) {
+function getWatchList($database, $chatId): ?object {
     $sql = "SELECT anime.name 
             FROM anime, watchlist
             WHERE anime.shikiid = watchlist.shikiid AND watchlist.chatid = ".$chatId;
     return getDataFromDatabase($database, $sql);
 }
 
-function getWatchlistItemByNumberInList($database, $numberInList) {
+function getWatchlistItemByNumberInList($database, $numberInList): ?object {
     $sql = "SELECT watchlistid 
             FROM watchlist
             ORDER BY watchlistid
@@ -118,7 +118,7 @@ function getWatchlistItemByNumberInList($database, $numberInList) {
     return getDataFromDatabase($database, $sql);
 }
 
-function removeFromWatchlist($database, $watchlistId) {
+function removeFromWatchlist($database, $watchlistId): ?bool {
     $sql = "DELETE FROM watchlist
             WHERE watchlistid = ".$watchlistId;
     return updateDataInDatabase($database, $sql);
