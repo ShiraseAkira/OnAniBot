@@ -1,5 +1,6 @@
 <?php
 require_once ("database.php");
+require_once ("messageProcessing.php");
 include('vendor/autoload.php');
 use Telegram\Bot\Api;
 
@@ -93,5 +94,5 @@ if ($text) {
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
     }
 } else {
-    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => "Отправьте текстовое сообщение."]);
+    processNonTextMessage();
 }
