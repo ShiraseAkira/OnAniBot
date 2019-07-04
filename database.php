@@ -87,13 +87,6 @@ function getOngoingList($database): ?object {
     return getDataFromDatabase($database, $sql);
 }
 
-function getShikiidByNumberInList($database, $numberInList): ?object {
-    $sql = "SELECT `shikiid` 
-            FROM `anime`
-            LIMIT ".($numberInList - 1).", 1";
-    return getDataFromDatabase($database, $sql);
-}
-
 function addToWatchlist($database, $shikiId, $chatId): ?bool {
     $sql = "INSERT IGNORE INTO watchlist (
                             watchlist.chatid, watchlist.shikiid
@@ -104,18 +97,17 @@ function addToWatchlist($database, $shikiId, $chatId): ?bool {
     return updateDataInDatabase($database, $sql);
 }
 
+function getAnimeNameByShikiId($database, $shikiId): ?object {
+    $sql = "SELECT anime.name
+            FROM `anime`
+            WHERE anime.shikiid = ".$shikiId;
+    return getDataFromDatabase($database, $sql);
+}
+
 function getWatchList($database, $chatId): ?object {
     $sql = "SELECT anime.name, anime.shikiid 
             FROM anime, watchlist
             WHERE anime.shikiid = watchlist.shikiid AND watchlist.chatid = ".$chatId;
-    return getDataFromDatabase($database, $sql);
-}
-
-function getWatchlistItemByNumberInList($database, $numberInList): ?object {
-    $sql = "SELECT watchlistid 
-            FROM watchlist
-            ORDER BY watchlistid
-            LIMIT ".($numberInList - 1).", 1";
     return getDataFromDatabase($database, $sql);
 }
 

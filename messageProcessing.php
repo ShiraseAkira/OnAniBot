@@ -69,6 +69,19 @@ function processWatchWatchListCommand($telegram, $chatId): void {
             $reply = "";
         }
     }
-    $reply .= "Используйте соответсвующую команду, чтобы удалить сериал из списка отслеживаемого";
+    $reply .= PHP_EOL."Используйте соответсвующую команду, чтобы удалить сериал из списка отслеживаемого";
+    $telegram->sendMessage(['chat_id' => $chatId, 'text' => $reply]);
+}
+
+function processAddToWatchListCommand($telegram, $chatId, $text): void {
+    $shikiId = (int)substr($text, 5);
+
+    $database = getDatabaseConnection();
+    addToWatchlist($database, $shikiId, $chatId);
+
+    $animeNameSQL = getAnimeNameByShikiId($database, $shikiId);
+    $animeNameObj = $animeNameSQL->fetch_object();
+
+    $reply = "Сериал ".$animeNameObj->name." был добавлен в список отслеживаемого";
     $telegram->sendMessage(['chat_id' => $chatId, 'text' => $reply]);
 }

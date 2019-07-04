@@ -8,6 +8,8 @@ const startCommand = "/start";
 const helpCommand = "/help";
 const watchOngoingListCommand = "Посмотреть список онгоингов";
 const watchWatchListCommand = "Посмотреть список отслеживаемого";
+const addToWatchListCommand = "/add_";
+const removeFromWatchListCommand = "/remove_";
 
 $telegram = new Api('639677299:AAEIo8bfRnC5axKEUuJG1l_LuBSHLmSD3ao');
 $result = $telegram->getWebhookUpdates();
@@ -25,19 +27,9 @@ if ($text) {
         processWatchOngoingListCommand($telegram, $chat_id);
     } elseif ($text == watchWatchListCommand) {
         processWatchWatchListCommand($telegram, $chat_id);
-    } elseif (substr($text, 0, 5) === "/add ") {
-        $numberInList = (int)substr($text, 5);
-
-        $database = getDatabaseConnection();
-        $shikiidReply = getShikiidByNumberInList($database, $numberInList);
-        $shikiidObj = $shikiidReply->fetch_object();
-        $shikiid = $shikiidObj->shikiid;
-
-        addToWatchlist($database, $shikiid, $chat_id);
-
-        $reply = "Сериал из списка под номером ".$numberInList." был добавлен в список отслеживаемого";
-        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
-    } elseif (substr($text, 0, 8) === "/remove ") {
+    } elseif (substr($text, 0, 5) === addToWatchListCommand) {
+        processAddToWatchListCommand($telegram, $chat_id, $text);
+    } elseif (substr($text, 0, 8) === removeFromWatchListCommand) {
         $numberInList = (int)substr($text, 8);
 
         $database = getDatabaseConnection();
