@@ -34,7 +34,7 @@ function processHelpCommand($telegram, $chatId): void {
 function processWatchOngoingListCommand($telegram, $chatId): void {
     $database = getDatabaseConnection();
     $ongoingList = getOngoingList($database);
-    $parsemode = "Markdown";
+    $parsemode = "markdown";
 
     $listIndex = 1;
     $reply = "В данный момент выходят сериалы:".PHP_EOL;
