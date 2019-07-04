@@ -34,13 +34,13 @@ function processHelpCommand($telegram, $chatId): void {
 function processWatchOngoingListCommand($telegram, $chatId): void {
     $database = getDatabaseConnection();
     $ongoingList = getOngoingList($database);
-    $parsemode = "markdown";
+    $parsemode = "HTML";
 
     $listIndex = 1;
     $reply = "В данный момент выходят сериалы:".PHP_EOL;
     while($ongoing = $ongoingList->fetch_object()){
-        $reply .= $listIndex.") ".$ongoing->name." /add_".$ongoing->shikiid." [подробнее...](".shikimoriUrl.
-            $ongoing->url.")".PHP_EOL;
+        $reply .= $listIndex.") ".$ongoing->name." /add_".$ongoing->shikiid." <a href='".shikimoriUrl.
+            $ongoing->url."'>подробнее...</a>".PHP_EOL;
         $listIndex++;
         if(strlen($reply) > messageLengthCap) {
             $telegram->sendMessage(['chat_id' => $chatId, 'text' => $reply, 'parse_mode' => $parsemode,
