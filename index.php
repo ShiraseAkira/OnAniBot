@@ -4,6 +4,10 @@ require_once ("messageProcessing.php");
 include('vendor/autoload.php');
 use Telegram\Bot\Api;
 
+const startCommand = "/start";
+const helpCommand = "/help";
+const watchOngoingListCommand = "Посмотреть список онгоингов";
+
 $telegram = new Api('639677299:AAEIo8bfRnC5axKEUuJG1l_LuBSHLmSD3ao');
 $result = $telegram->getWebhookUpdates();
 
@@ -12,14 +16,11 @@ $chat_id = $result["message"]["chat"]["id"];
 
 
 if ($text) {
-    if ($text == "/start") {
-        processHelpMessage($telegram, $chat_id);
-    } elseif ($text == "/help") {
-        $reply = "Добро пожаловать в бота!".PHP_EOL.
-            "Он предназначерн для отслеживания выходящих в эфир anime сериалов.".PHP_EOL.
-            "Используйте /start для начала работы с ботом.";
-        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
-    } elseif ($text == "Посмотреть список онгоингов") {
+    if ($text == startCommand) {
+        processStartCommand($telegram, $chat_id);
+    } elseif ($text == helpCommand) {
+        processHelpCommand($telegram, $chat_id);
+    } elseif ($text == watchOngoingListCommand) {
         $database = getDatabaseConnection();
         $ongoingList = getOngoingList($database);
 
