@@ -9,16 +9,11 @@ $result = $telegram->getWebhookUpdates();
 
 $text = $result["message"]["text"];
 $chat_id = $result["message"]["chat"]["id"];
-$keyboard = [["Посмотреть список онгоингов"], ["Посмотреть список отслеживаемого"]];
+
 
 if ($text) {
     if ($text == "/start") {
-        $database = getDatabaseConnection();
-        checkIfNewUserAndAdd($database, $chat_id);
-
-        $reply = "Добро пожаловать в бота!";
-        $reply_markup = $telegram->replyKeyboardMarkup(['keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => false]);
-        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $reply_markup]);
+        processHelpMessage($telegram, $chat_id);
     } elseif ($text == "/help") {
         $reply = "Добро пожаловать в бота!".PHP_EOL.
             "Он предназначерн для отслеживания выходящих в эфир anime сериалов.".PHP_EOL.
@@ -90,9 +85,8 @@ if ($text) {
         $reply = "Сериал из списка под номером ".$numberInList." был удален из списока отслеживаемого.";
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
     } else {
-        $reply = "Используйте /start для начала работы с ботом".PHP_EOL."или /help для вызова справки.";
-        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
+        processNonCommandMessage($telegram, $chat_id);
     }
 } else {
-    processNonTextMessage();
+    processNonTextMessage($telegram, $chat_id);
 }
