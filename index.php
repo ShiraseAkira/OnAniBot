@@ -27,9 +27,9 @@ if ($text) {
         processWatchOngoingListCommand($telegram, $chatId);
     } elseif ($text == WATCH_WATCHLIST_COMMAND) {
         processWatchWatchListCommand($telegram, $chatId);
-    } elseif (!strpos($text, ADD_TO_WATCHLIST_COMMAND)) {
+    } elseif (strpos($text, ADD_TO_WATCHLIST_COMMAND) == 0) {
         processAddToWatchListCommand($telegram, $chatId, $text);
-    } elseif (!strpos($text, REMOVE_FROM_WATCHLIST_COMMAND)) {
+    } elseif (strpos($text, REMOVE_FROM_WATCHLIST_COMMAND) == 0) {
         processRemoveFromWatchListCommand($telegram, $chatId, $text);
     } else {
         processNonCommandMessage($telegram, $chatId);

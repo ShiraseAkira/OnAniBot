@@ -7,7 +7,7 @@ const DB_NAME = "heroku_717c9367403bbb5";
 function getDatabaseConnection(): ?object {
     $mysqlli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
     if($mysqlli->connect_errno) {
-        error_log("Ошибка: " . $mysqlli->connect_errno);
+        error_log("Error: " . $mysqlli->connect_errno);
         return null;
     } else {
         return $mysqlli;
