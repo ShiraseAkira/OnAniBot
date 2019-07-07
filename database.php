@@ -1,14 +1,14 @@
 <?php
-const dbHost = "eu-cdbr-west-02.cleardb.net";
-const dbUsername = "b2b48db1e8befd";
-const dbPasswd = "8113a8b7";
-const dbName = "heroku_717c9367403bbb5";
+const DB_HOST = "eu-cdbr-west-02.cleardb.net";
+const DB_USERNAME = "b2b48db1e8befd";
+const DB_PASSWORD = "8113a8b7";
+const DB_NAME = "heroku_717c9367403bbb5";
 
 function getDatabaseConnection(): ?object {
-    $mysqlli = new mysqli(dbHost, dbUsername, dbPasswd, dbName);
+    $mysqlli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
     if($mysqlli->connect_errno) {
         error_log("Ошибка: " . $mysqlli->connect_errno);
-        return NULL;
+        return null;
     } else {
         return $mysqlli;
     }
@@ -17,7 +17,7 @@ function getDatabaseConnection(): ?object {
 function getDataFromDatabase($database, $sql): ?object {
     if(!$result = $database->query($sql)) {
         error_log("Error: ".$sql.PHP_EOL.$database->error);
-        return NULL;
+        return null;
     } else {
         return $result;
     }
@@ -26,9 +26,9 @@ function getDataFromDatabase($database, $sql): ?object {
 function updateDataInDatabase($database, $sql): ?bool {
     if(!$database->query($sql)) {
         error_log("Error: ".$sql.PHP_EOL.$database->error);
-        return NULL;
+        return null;
     } else {
-        return TRUE;
+        return true;
     }
 }
 
