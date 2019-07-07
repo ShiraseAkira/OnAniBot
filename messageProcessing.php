@@ -8,7 +8,7 @@ const PARSE_MODE = "HTML";
 const NON_TEXT_MESSAGE_REPLY = "Отправьте текстовое сообщение.";
 const NON_COMMAND_MESSAGE_REPLY = "Используйте /start для начала работы с ботом или /help для вызова справки.";
 const START_COMMAND_MESSAGE_REPLY = "Добро пожаловать в бота!";
-const HELP_COMMAND_MESSAGE_REPLY = "Он предназначерн для отслеживания выходящих в эфир anime сериалов. Используйте /start для начала работы с ботом.";
+const HELP_COMMAND_MESSAGE_REPLY = " Он предназначерн для отслеживания выходящих в эфир anime сериалов. Используйте /start для начала работы с ботом.";
 const WATCH_ONGOING_LIST_COMMAND_REPLY_START = "В данный момент выходят сериалы:\n";
 const WATCH_ONGOING_LIST_COMMAND_REPLY_END =  "\nИспользуйте соответсвующую команду, чтобы добавить сериал в список отслеживаемого или нажмите на \"о сериале...\", чтобы перейти на сраницу с информациейо сериале.";
 const WATCH_WATCHLIST_COMMAND_REPLY_START = "В данный момент вы отслеживаете сериалы:\n";
@@ -19,12 +19,18 @@ const REMOVE_FROM_WATCHLIST_COMMAND_REPLY = " был удален из спис�
 
 function processNonTextMessage($telegram, $chatId): void {
     $reply = NON_TEXT_MESSAGE_REPLY;
-    $telegram->sendMessage(['chat_id' => $chatId, 'text' => $reply]);
+    $telegram->sendMessage([
+                            'chat_id' => $chatId,
+                            'text' => $reply
+                            ]);
 }
 
 function processNonCommandMessage($telegram, $chatId): void {
     $reply = NON_COMMAND_MESSAGE_REPLY;
-    $telegram->sendMessage(['chat_id' => $chatId, 'text' => $reply]);
+    $telegram->sendMessage([
+                            'chat_id' => $chatId,
+                            'text' => $reply
+                            ]);
 }
 
 function processStartCommand($telegram, $chatId): void {
