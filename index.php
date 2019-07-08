@@ -19,6 +19,7 @@ $text = $result["message"]["text"];
 $chatId = $result["message"]["chat"]["id"];
 
 if ($text) {
+    processTextMessage($chatId);
     if ($text == START_COMMAND) {
         processStartCommand($telegram, $chatId);
     } elseif ($text == HELP_COMMAND) {
